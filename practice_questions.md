@@ -798,3 +798,148 @@ Float:
 Critical path: B → D → F → G. Duration = 3+6+4+2 = 15. ✓
 
 (e) D delayed by 2: D's float=0 → project delayed by 2 days. New duration = 17.
+
+---
+
+**Q31 — Graphical LP**
+
+Consider the LP:
+
+```
+Min z = −x₁ − 3x₂
+s.t.   x₁ +  x₂ ≤ 6   (C1)
+       x₁        ≤ 4   (C2)
+              x₂ ≤ 5   (C3)
+      x₁, x₂    ≥ 0
+```
+
+(a) Draw the feasible region. Label each constraint line and shade the feasible region.
+(b) Find the optimal solution using the graphical method. State x₁*, x₂*, z*.
+(c) Which constraints are binding at the optimal? Which are non-binding?
+(d) Write a different objective function for which the LP has multiple optimal solutions. Justify.
+(e) Write an additional constraint that makes the LP infeasible. Justify.
+(f) Now add constraint C4: x₁ + x₂ ≥ 5 to the original problem. Find the new optimal solution and z*.
+
+---
+
+**Q32 — Minimum Spanning Tree**
+
+Find the minimum spanning tree for this network using Prim's algorithm. Start at node 1. Show each step — which node you add and why.
+
+```
+Edges:
+1-2: 6     1-3: 1     1-4: 5
+2-3: 5     2-5: 3
+3-4: 5     3-5: 6     3-6: 4
+4-6: 2
+5-6: 6
+```
+
+State the total MST cost and list the edges included.
+
+---
+
+**Q33 — Multiple Optimal Solutions and Degeneracy**
+
+Given this optimal simplex tableau for a MAX LP:
+
+| Basis | x₁ | x₂ | x₃ | s₁ | s₂ | RHS |
+|-------|----|----|----|----|-----|-----|
+| Z     | 0  | 0  | 4  | 3  | 0   | 24  |
+| x₁    | 1  | 2  | 1  | 1  | 0   | 4   |
+| s₂    | 0  | 1  | 2  | 0  | 1   | 0   |
+
+(a) What is the optimal solution? What is z*?
+(b) Is the solution degenerate? Explain what degeneracy means.
+(c) Does this LP have multiple optimal solutions? How can you tell from the tableau? If yes, find a second optimal solution.
+
+---
+
+**Q34 — Primal-Dual Relationship**
+
+For each scenario, use the fundamental theorem of LP to determine what you can conclude about the other problem. Justify each answer.
+
+(a) You solve the primal MAX LP and find it is unbounded. What can you say about the dual?
+(b) You solve the dual MIN LP and find it is infeasible. What can you say about the primal?
+(c) You find a primal feasible solution with Z = 40 and a dual feasible solution with W = 40. What can you conclude?
+(d) You find a primal feasible solution with Z = 30 and a dual feasible solution with W = 45. What can you conclude?
+
+---
+
+---
+
+**A31 — Graphical LP**
+
+(a) Feasible region: intersection of x₁+x₂≤6, x₁≤4, x₂≤5, x₁,x₂≥0. Bounded polygon with vertices (0,0), (4,0), (4,2), (1,5), (0,5).
+
+(b) Objective slope: z=−x₁−3x₂=k → x₂=(−k−x₁)/3, slope=−1/3. Minimizing z means pushing the line downward-right (increasing x₁+3x₂). Last vertex touched:
+
+Check vertices:
+- (0,0): z=0
+- (4,0): z=−4
+- (4,2): z=−4−6=−10
+- (1,5): z=−1−15=−16
+- (0,5): z=0−15=−15
+
+Optimal: x₁=1, x₂=5, z=−16.
+
+(c) At (1,5): C1: 6≤6 ✓ binding. C3: x₂=5=5 ✓ binding. C2: x₁=1<4 non-binding.
+
+(d) Multiple optima when objective parallel to a binding constraint edge. C1 has slope −1 and C3 is horizontal (slope 0). Neither matches −1/3. But if we use objective z=−x₁−x₂ (slope −1), it's parallel to C1. At (1,5): z=−6. At (4,2): z=−6. Multiple optima along C1 edge between (1,5) and (4,2). ✓
+
+(e) x₁+x₂ ≥ 7. All feasible points have x₁+x₂≤6 (from C1), so no point can satisfy both simultaneously.
+
+(f) Add C4: x₁+x₂≥5. New feasible region: same as before but restricted to above x₁+x₂=5. Vertices become (0,5), (1,5), (4,2), (4,0)... check (4,0): x₁+x₂=4<5 violates C4. New vertices: (0,5), (1,5), (4,2), (5,0) — wait C2: x₁≤4 so (5,0) infeasible. Check (4,1): C4: 5=5 ✓ and C2: x₁=4 ✓. So C2∩C4: x₁=4, x₂=1.
+
+Vertices with C4 added: (0,5), (1,5), (4,2), (4,1). Check z:
+- (4,1): z=−4−3=−7
+- (4,2): z=−10
+- (1,5): z=−16 ← still optimal
+- (0,5): z=−15
+
+New optimal: same as before. x₁=1, x₂=5, z=−16. C4 is non-binding at the original optimal.
+
+---
+
+**A32 — MST**
+
+Start at node 1.
+
+| Step | Connected | Cheapest edge to new node | Add |
+|------|-----------|---------------------------|-----|
+| 1 | {1} | 1-3:1, 1-4:5, 1-2:6 | **1-3 (cost 1)** |
+| 2 | {1,3} | 3-6:4, 3-4:5, 3-2:5, 1-4:5, 1-2:6 | **3-6 (cost 4)** |
+| 3 | {1,3,6} | 6-4:2, 3-4:5, 3-2:5, 1-4:5, 1-2:6 | **6-4 (cost 2)** |
+| 4 | {1,3,4,6} | 3-2:5, 1-4 already connected, 1-2:6 | **3-2 or 2-5? Check: 2-5:3** — but 2 not connected yet. From {1,3,4,6}: cheapest to unconnected = 2-3:5 or 2-5 not reachable yet. Cheapest: 3-2:5 or 4-1 (connected). Add **3-2 (cost 5)** |
+| 5 | {1,2,3,4,6} | 2-5:3 | **2-5 (cost 3)** |
+
+MST edges: 1-3, 3-6, 6-4, 3-2, 2-5. Total cost = 1+4+2+5+3 = **15**.
+
+---
+
+**A33 — Multiple Optimal Solutions and Degeneracy**
+
+(a) Basic: x₁=4, s₂=0. Non-basic: x₂=0, x₃=0, s₁=0. z*=24.
+Full solution: x₁=4, x₂=0, x₃=0, z*=24.
+
+(b) Yes, degenerate. s₂ is a basic variable with value 0. Degeneracy means a basic variable equals zero — the solution is at a vertex where more than 2 constraints are binding (in a 2D sense). It can cause cycling in simplex and means multiple optimal bases may represent the same vertex.
+
+(c) Yes, multiple optimal solutions. x₂ is non-basic with Row 0 coefficient = 0. In a MAX problem, a non-basic variable with Row 0 = 0 means it can enter the basis without changing z. Pivot on x₂ (entering), s₂ (departing, ratio 0/1=0):
+
+New Row 0 stays at z=24. New basis: x₁, x₂. The second optimal solution is found by solving:
+
+From s₂ row (÷1): x₂=0 still... actually ratio=0/1=0, so x₂ enters, s₂ leaves, but x₂ stays at 0 (degenerate pivot). Second BFS: x₁=4, x₂=0, x₃=0, z=24. Same point — the degeneracy means the "second solution" is the same vertex expressed differently.
+
+For a true second solution (different point), look for another non-basic variable with Row 0=0. Only x₂ qualifies here, confirming this is a degenerate case with a unique optimal point but multiple optimal bases.
+
+---
+
+**A34 — Primal-Dual Relationship**
+
+(a) Primal unbounded → by fundamental theorem, dual is **infeasible**. (Primal unbounded means dual feasible region is empty — if dual were feasible, weak duality would bound the primal.)
+
+(b) Dual infeasible → primal is **unbounded OR infeasible**. Cannot determine which without more information. The asymmetric case: dual infeasible does not guarantee primal unbounded.
+
+(c) Z=40=W=40. By weak duality Z≤W always. Z=W means the gap is zero. By strong duality, **both are optimal**. No further improvement is possible for either.
+
+(d) Z=30 < W=45. Weak duality is satisfied (Z≤W). But this does NOT mean either is optimal — just that both are feasible. The primal may still improve toward 45, and the dual may still improve toward 30. Neither is confirmed optimal.
